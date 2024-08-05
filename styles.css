@@ -83,3 +83,34 @@ body {
 .file-list-section button:hover {
     background-color: #0056b3;
 }
+
+.progress-container {
+    margin-top: 20px;
+    position: relative;
+    width: 100%;
+    background-color: #ddd;
+    border-radius: 10px;
+    height: 30px;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: #4caf50;
+    width: 0%;
+    border-radius: 10px;
+    transition: width 0.4s ease;
+}
+
+.progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: bold;
+}
+
+.upload-status {
+    margin-top: 10px;
+    font-weight: bold;
+}
