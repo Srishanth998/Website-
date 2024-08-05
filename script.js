@@ -8,17 +8,17 @@ function uploadFiles() {
     const fileList = getFileList();
     const limit = 2 * 1024 * 1024 * 1024; // 2 GB limit
     let totalSize = getTotalSize();
+    const uploadStatus = document.getElementById('uploadStatus');
 
     Array.from(files).forEach(file => {
         if (totalSize + file.size > limit) {
-            document.getElementById('uploadStatus').textContent = 'Storage limit exceeded. Please delete some files.';
+            uploadStatus.textContent = 'Storage limit exceeded. Please delete some files.';
             return;
         }
 
         const reader = new FileReader();
         const progressBar = document.getElementById('progressBar');
         const progressText = document.getElementById('progressText');
-        const uploadStatus = document.getElementById('uploadStatus');
 
         reader.onprogress = function(e) {
             if (e.lengthComputable) {
