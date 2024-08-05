@@ -12,11 +12,23 @@ function uploadFile() {
         const limit = 2 * 1024 * 1024 * 1024; // 2 GB limit
 
         if (totalSize > limit) {
-            alert('Storage limit exceeded. Please delete some files.');
+            document.getElementById('uploadStatus').textContent = 'Storage limit exceeded. Please delete some files.';
             return;
         }
 
         const reader = new FileReader();
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const uploadStatus = document.getElementById('uploadStatus');
+
+        reader.onprogress = function(e) {
+            if (e.lengthComputable) {
+                const percent = Math.round((e.loaded / e.total) * 100);
+                progressBar.style.width = percent + '%';
+                progressText.textContent = percent + '%';
+            }
+        };
+
         reader.onload = function(e) {
             const fileData = {
                 name: file.name,
@@ -26,7 +38,15 @@ function uploadFile() {
             fileList.push(fileData);
             saveFileList(fileList);
             loadFiles();
+            progressBar.style.width = '100%';
+            progressText.textContent = 'Upload Complete';
+            uploadStatus.innerHTML = '&#10004; Upload Successful'; // Tick mark
         };
+
+        reader.onerror = function() {
+            uploadStatus.textContent = 'Error uploading file.';
+        };
+
         reader.readAsDataURL(file);
 
         fileInput.value = ''; // Clear the input
