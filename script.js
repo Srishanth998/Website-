@@ -2,16 +2,15 @@ document.addEventListener('DOMContentLoaded', function() {
     loadFiles();
 });
 
-function uploadFile() {
+function uploadFiles() {
     const fileInput = document.getElementById('fileInput');
-    const file = fileInput.files[0];
+    const files = fileInput.files;
+    const fileList = getFileList();
+    const limit = 2 * 1024 * 1024 * 1024; // 2 GB limit
+    let totalSize = getTotalSize();
 
-    if (file) {
-        const fileList = getFileList();
-        const totalSize = getTotalSize() + file.size;
-        const limit = 2 * 1024 * 1024 * 1024; // 2 GB limit
-
-        if (totalSize > limit) {
+    Array.from(files).forEach(file => {
+        if (totalSize + file.size > limit) {
             document.getElementById('uploadStatus').textContent = 'Storage limit exceeded. Please delete some files.';
             return;
         }
@@ -33,9 +32,10 @@ function uploadFile() {
             const fileData = {
                 name: file.name,
                 type: file.type,
-                data: e.target.result // Store the file data
+                data: e.target.result
             };
             fileList.push(fileData);
+            totalSize += file.size;
             saveFileList(fileList);
             loadFiles();
             progressBar.style.width = '100%';
@@ -50,11 +50,9 @@ function uploadFile() {
         };
 
         reader.readAsDataURL(file);
+    });
 
-        fileInput.value = ''; // Clear the input
-    } else {
-        alert('Please select a file to upload.');
-    }
+    fileInput.value = ''; // Clear the input
 }
 
 function loadFiles() {
