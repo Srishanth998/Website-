@@ -5,18 +5,19 @@ document.addEventListener('DOMContentLoaded', function() {
 function uploadFile() {
     const fileInput = document.getElementById('fileInput');
     const file = fileInput.files[0];
-    
+
     if (file) {
         const fileList = getFileList();
         if (getTotalSize() + file.size > 2 * 1024 * 1024 * 1024) { // 2 GB limit
             alert('Storage limit exceeded. Please delete some files.');
             return;
         }
-        
+
         const reader = new FileReader();
         reader.onload = function(e) {
             const fileData = {
                 name: file.name,
+                type: file.type,
                 data: e.target.result
             };
             fileList.push(fileData);
@@ -24,7 +25,7 @@ function uploadFile() {
             loadFiles();
         };
         reader.readAsDataURL(file);
-        
+
         fileInput.value = ''; // Clear the input
     } else {
         alert('Please select a file to upload.');
@@ -39,25 +40,25 @@ function loadFiles() {
     fileList.forEach((file, index) => {
         const listItem = document.createElement('li');
         listItem.textContent = file.name;
-        
+
         const viewButton = document.createElement('button');
         viewButton.textContent = 'View';
         viewButton.onclick = function() {
-            viewFile(file.data, file.name);
+            viewFile(file.data, file.type);
         };
-        
+
         const downloadButton = document.createElement('button');
         downloadButton.textContent = 'Download';
         downloadButton.onclick = function() {
             downloadFile(file.data, file.name);
         };
-        
+
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Delete';
         deleteButton.onclick = function() {
             deleteFile(index);
         };
-        
+
         listItem.appendChild(viewButton);
         listItem.appendChild(downloadButton);
         listItem.appendChild(deleteButton);
@@ -65,7 +66,7 @@ function loadFiles() {
     });
 }
 
-function viewFile(fileData, fileName) {
+function viewFile(fileData, fileType) {
     const newWindow = window.open();
     newWindow.document.write(`<iframe src="${fileData}" style="width:100%; height:100%; border:none;"></iframe>`);
 }
