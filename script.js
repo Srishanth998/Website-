@@ -8,7 +8,7 @@ function uploadFile() {
     
     if (file) {
         const fileList = getFileList();
-        if (getTotalSize() + file.size > 10 * 1024 * 1024) { // 10 MB limit
+        if (getTotalSize() + file.size > 2 * 1024 * 1024 * 1024) { // 2 GB limit
             alert('Storage limit exceeded. Please delete some files.');
             return;
         }
