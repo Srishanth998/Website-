@@ -90,8 +90,18 @@ function loadFiles() {
 }
 
 function viewFile(fileData, fileType) {
-    const newWindow = window.open();
-    newWindow.document.write(`<iframe src="${fileData}" style="width:100%; height:100%; border:none;"></iframe>`);
+    if (fileType.startsWith('video/') || fileType.startsWith('audio/')) {
+        const newWindow = window.open();
+        newWindow.document.write(`
+            <video controls style="width:100%; height:100%;">
+                <source src="${fileData}" type="${fileType}">
+                Your browser does not support the video tag.
+            </video>
+        `);
+    } else {
+        const newWindow = window.open();
+        newWindow.document.write(`<iframe src="${fileData}" style="width:100%; height:100%; border:none;"></iframe>`);
+    }
 }
 
 function downloadFile(fileData, fileName) {
