@@ -94,5 +94,5 @@ function deleteFile(index) {
 
 function getTotalSize() {
     const fileList = getFileList();
-    return fileList.reduce((total, file) => total + (file.data.length * (3 / 4)), 0); // Approximate size
+    return fileList.reduce((total, file) => total + (file.data.length * (3 / 4)), 0) / (1024 * 1024 * 1024); // Approximate size in GB
 }
