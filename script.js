@@ -33,7 +33,7 @@ function uploadFile() {
             const fileData = {
                 name: file.name,
                 type: file.type,
-                data: e.target.result
+                data: e.target.result // Store the file data
             };
             fileList.push(fileData);
             saveFileList(fileList);
@@ -44,6 +44,8 @@ function uploadFile() {
         };
 
         reader.onerror = function() {
+            progressBar.style.width = '0%';
+            progressText.textContent = 'Error';
             uploadStatus.textContent = 'Error uploading file.';
         };
 
